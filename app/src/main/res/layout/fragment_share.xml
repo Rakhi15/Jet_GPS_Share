@@ -11,7 +11,7 @@
         android:id="@+id/btn1"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:text="Location Update"
+        android:text="Location Share"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
         />

@@ -32,6 +32,16 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        
+        <receiver android:name=".BackgroundCode"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="Background"/>
+            </intent-filter>
+        </receiver>
     </application>
+    
+
 
 </manifest>
