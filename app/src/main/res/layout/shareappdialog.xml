@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="YOUR FRIEND NOT USING THE APP,PLEASE SHARE
+      THE APP TO GET LOCATION."
+        android:layout_gravity="center"
+        android:textSize="15sp"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/carter_one"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="20dp"
+        android:id="@+id/friendmobile"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="CANCEL"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cancelshare"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:text="SHARE"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/share"
+            />
+    </LinearLayout>
+</LinearLayout>
