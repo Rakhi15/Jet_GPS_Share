@@ -3,7 +3,10 @@ package com.oakspro.jetgpsshare;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +41,7 @@ public class MapFragment extends Fragment {
     String userMobile=null;
     String api_call_check="https://oakspro.com/projects/project35/deepu/JGS/check_friends.php";
     ProgressDialog progressDialog;
+    String friend_status=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,10 +112,10 @@ public class MapFragment extends Fragment {
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     String status=jsonObject.getString("success");
-                    String friend_status=jsonObject.getString("friend_status");
+                    friend_status=jsonObject.getString("friend_status");
 
 
-                    if (status.equals("1")){
+                    if (status.equals("success")){
 
                         if (friend_status.equals("1")){
                             Toast.makeText(getContext(), "Found Friend....Happy Sharing", Toast.LENGTH_SHORT).show();
@@ -126,36 +130,46 @@ public class MapFragment extends Fragment {
                         }
 
 
-                    }else {
-                        Toast.makeText(getContext(), "Mobile Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                    if (status.equals("failed")){
+                        Log.i("response of zero: ", status.toString());
                         progressDialog.dismiss();
-                        final Dialog d = new Dialog(getActivity());
 
-                        d.setTitle("MESSAGE");
-                        d.setContentView(R.layout.shareappdialog);
-                        d.setCancelable(false);
-                        final Button sharebtn = d.findViewById(R.id.share);
-                        final Button cancelbtn= d.findViewById(R.id.cancelshare);
+                        Toast.makeText(getContext(), "Mobile Not Found", Toast.LENGTH_SHORT).show();
+
+                       final Dialog d1 = new Dialog(getActivity());
+
+                        d1.setTitle("MESSAGE");
+                        d1.setContentView(R.layout.shareappdialog);
+                        d1.setCancelable(false);
+                        final Button sharebtn = d1.findViewById(R.id.share);
+                        final Button cancelbtn= d1.findViewById(R.id.cancelshare);
 
                         sharebtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Link Share", Toast.LENGTH_SHORT).show();
-                                d.dismiss();
+                                sharetoWhatsapp(friendmobilenum);
+                                d1.dismiss();
                             }
                         });
                         cancelbtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                d.dismiss();
+                                d1.dismiss();
                             }
                         });
-                        d.show();
+                        d1.show();
 
+
+
+
+                    }else {
+                        Toast.makeText(getContext(), "Error Code", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getContext(), "Exception: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -180,5 +194,30 @@ public class MapFragment extends Fragment {
         requestQueue.add(request);
 
 
+    }
+
+    private void sharetoWhatsapp(String friendmobilenum) {
+        boolean isInstalled=appInstalled("com.whatsapp");
+        String app_link="Please Download our JetGPSShare to find your friends \n https://oakspro.com/projects/project35/deepu/JGS/download/JetGPSShare.apk";
+        if (isInstalled){
+            Intent intent=new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone="+"+91"+friendmobilenum+ "&text="+app_link));
+            startActivity(intent);
+        }else {
+            Toast.makeText(getContext(), "Please Install Whatsapp First", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+    private boolean appInstalled(String package_name){
+        PackageManager packageManager=getActivity().getPackageManager();
+        boolean app_install;
+        try {
+            packageManager.getPackageInfo(package_name, PackageManager.GET_ACTIVITIES);
+            app_install=true;
+        }catch (PackageManager.NameNotFoundException e){
+            app_install=false;
+        }
+        return app_install;
     }
 }

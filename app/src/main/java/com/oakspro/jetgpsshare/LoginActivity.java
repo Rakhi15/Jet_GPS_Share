@@ -91,10 +91,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         String name=jsonObject.getString("name");
                         String mobile=jsonObject.getString("mobile");
+                        String email=jsonObject.getString("email");
+
                         Toast.makeText(LoginActivity.this, "Login Success: "+name, Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent(LoginActivity.this, Dashboard.class);
                         myedit.putString("name", name);
                         myedit.putString("mobile", mobile);
+                        myedit.putString("email", email);
                         myedit.putBoolean("loginS", true);
                         myedit.commit();
                         startActivity(intent);
